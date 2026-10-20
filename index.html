@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<title>DataVault — Personal Data Manager</title>
+<style>
+:root{color-scheme:dark;--bg:#080d18;--panel:#101a2b;--panel2:#142238;--line:#263751;--text:#edf4ff;--muted:#9fb0ca;--blue:#4c9aff;--cyan:#61d5ed;--red:#ff6b78;--green:#51d6a0;--radius:18px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#142b4d 0,transparent 38%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:11px;padding:10px 14px;background:#192841;color:var(--text);transition:.15s}button:hover{border-color:var(--blue);transform:translateY(-1px)}button.primary{background:linear-gradient(135deg,#2677ed,#3d9cf6);border-color:transparent;font-weight:700}button.danger{color:#ffc2c8;border-color:#673443;background:#321d2a}button.subtle{background:transparent}input,textarea,select{width:100%;background:#0a1322;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px 12px;outline:none}input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #4c9aff22}textarea{min-height:150px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.app{max-width:1440px;margin:auto;padding:24px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 20px;border:1px solid var(--line);background:#0d1727dd;backdrop-filter:blur(14px);border-radius:18px;margin-bottom:24px}.brand{display:flex;gap:12px;align-items:center;font-weight:800;font-size:21px;letter-spacing:-.4px}.logo{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#2677ed,#55d1e8);font-size:23px}.brand small{display:block;color:var(--muted);font-size:11px;font-weight:500;letter-spacing:1.4px;text-transform:uppercase}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.hero{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:30px;border:1px solid #2b4a70;border-radius:22px;background:linear-gradient(115deg,#122743,#101a2b 62%,#112b40);margin-bottom:20px}.eyebrow{color:var(--cyan);font-weight:800;font-size:12px;letter-spacing:1.8px;text-transform:uppercase}.hero h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-1.5px;margin:10px 0}.hero p{max-width:650px;color:var(--muted);margin:0 0 20px}.hero-mark{font-size:82px;filter:drop-shadow(0 0 25px #4c9aff50)}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.stat,.panel{background:linear-gradient(145deg,#111d30,#0d1727);border:1px solid var(--line);border-radius:var(--radius)}.stat{padding:18px}.stat-label{color:var(--muted);font-size:13px}.stat-num{font-size:28px;font-weight:800;margin-top:5px;letter-spacing:-1px}.layout{display:grid;grid-template-columns:minmax(280px,.85fr) minmax(0,1.5fr);gap:18px;align-items:start}.panel{padding:21px;min-width:0}.panel h2{margin:0 0 5px;font-size:19px}.hint{color:var(--muted);font-size:13px;margin:0 0 18px}.field{margin:14px 0}.field label{display:block;font-weight:650;font-size:13px;margin-bottom:7px}.row{display:flex;gap:10px}.row>*{min-width:0;flex:1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}.toolbar{display:flex;gap:10px;align-items:center;margin:14px 0}.toolbar input{flex:1}.count{white-space:nowrap;color:var(--muted);font-size:13px}.records{display:grid;gap:10px}.record{border:1px solid var(--line);background:#0c1626;border-radius:14px;padding:15px}.record-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.record-title{font-weight:750;overflow-wrap:anywhere}.tag{display:inline-block;color:#a9dcff;background:#193454;border:1px solid #2c5077;border-radius:999px;padding:3px 9px;font-size:11px;margin-top:6px}.record-preview{white-space:pre-wrap;overflow-wrap:anywhere;color:#bdcbe0;font-size:13px;max-height:100px;overflow:hidden;margin:12px 0}.record-meta{font-size:11px;color:#8498b5}.record-buttons{display:flex;gap:6px;flex-wrap:wrap}.record-buttons button{padding:6px 9px;font-size:12px}.empty{text-align:center;padding:36px 14px;color:var(--muted);border:1px dashed #344660;border-radius:14px}.empty b{display:block;color:var(--text);font-size:16px;margin-bottom:5px}.footer{color:#7f93b0;text-align:center;font-size:12px;padding:24px 0}.notice{display:none;border:1px solid #2b745d;background:#103329;color:#b8ffe1;padding:10px 13px;border-radius:10px;margin:12px 0}.notice.show{display:block}.small{font-size:12px;color:var(--muted)}.checkbox-line{display:flex;gap:9px;align-items:flex-start;color:var(--muted);font-size:12px}.checkbox-line input{width:auto;margin-top:5px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.hero-mark{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.app{padding:13px}.hero{padding:23px}.topbar{align-items:flex-start;flex-direction:column}}
+@media(max-width:440px){.stats{gap:8px}.stat{padding:13px}.stat-num{font-size:24px}.panel{padding:15px}.row{flex-direction:column}.top-actions button{padding:8px 10px}.hero h1{font-size:31px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="logo">▤</div><div>DataVault<small>Personal data workspace</small></div></div>
+  <div class="top-actions">
+    <button id="exportBtn">Export JSON</button>
+    <button id="importBtn">Import JSON</button>
+    <input id="importFile" type="file" accept=".json,application/json" hidden>
+  </div>
+</header>
+<section class="hero">
+  <div><div class="eyebrow">Your data. Your control.</div><h1>Keep important information<br>organized in one vault.</h1>
+  <p>A lightweight, local-first data manager for notes, structured JSON, project details, and other information. Search records, assign categories, and export a backup whenever you need.</p>
+  <button class="primary" id="newRecordBtn">＋ Create a record</button></div>
+  <div class="hero-mark" aria-hidden="true">▤</div>
+</section>
+<section class="stats" aria-label="Vault summary">
+  <div class="stat"><div class="stat-label">Total records</div><div class="stat-num" id="totalStat">0</div></div>
+  <div class="stat"><div class="stat-label">Categories</div><div class="stat-num" id="categoryStat">0</div></div>
+  <div class="stat"><div class="stat-label">Created today</div><div class="stat-num" id="todayStat">0</div></div>
+  <div class="stat"><div class="stat-label">Storage mode</div><div class="stat-num" style="font-size:19px">Local</div></div>
+</section>
+<div id="notice" class="notice" role="status" aria-live="polite"></div>
+<main class="layout">
+<section class="panel" id="editorPanel">
+  <h2 id="editorTitle">Create a record</h2><p class="hint">Save a value as text or valid JSON. Fields are stored in this browser.</p>
+  <form id="recordForm">
+    <div class="field"><label for="recordKey">Record key</label><input id="recordKey" maxlength="160" required placeholder="e.g. project:datavault"></div>
+    <div class="row"><div class="field"><label for="recordCategory">Category</label><input id="recordCategory" maxlength="80" placeholder="general"></div></div>
+    <div class="field"><label for="recordValue">Value</label><textarea id="recordValue" required placeholder='Text, or JSON such as {"theme":"dark","active":true}'></textarea><div class="small">Valid JSON is stored as structured data. Other input is stored as plain text.</div></div>
+    <div class="actions"><button class="primary" type="submit" id="saveBtn">Save record</button><button type="button" id="resetBtn">Clear form</button></div>
+  </form>
+  <div style="border-top:1px solid var(--line);margin-top:22px;padding-top:17px">
+    <h2 style="font-size:15px">Privacy & backups</h2>
+    <p class="small">This demo saves data in this browser's localStorage. It does not upload records to a server. Browser data can be lost if site data is cleared, so export regular JSON backups.</p>
+    <button class="subtle" id="clearAllBtn">Delete all records…</button>
+  </div>
+</section>
+<section class="panel">
+  <h2>Your records</h2><p class="hint">Search keys, categories, or stored values. Select Edit to load a record into the form.</p>
+  <div class="toolbar"><input id="searchInput" placeholder="⌕  Search records…" aria-label="Search records"><select id="categoryFilter" aria-label="Filter category" style="max-width:170px"><option value="">All categories</option></select><span id="recordCount" class="count">0 records</span></div>
+  <div id="recordList" class="records"><div class="empty"><b>Your vault is ready</b>Create your first record to get started.</div></div>
+</section>
+</main>
+<footer class="footer">DataVault • Local-first demo • Keep backups of important data</footer>
+</div>
+<script>
+(() => {
+  "use strict";
+  const STORAGE_KEY = "datavault.records.v1";
+  const $ = id => document.getElementById(id);
+  let records = [];
+  let editingKey = null;
+  let noticeTimer;
+  const nowISO = () => new Date().toISOString();
+  const safeText = value => String(value ?? "");
+  const formatDate = value => {
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? "Unknown date" : d.toLocaleString();
+  };
+  const displayValue = value => typeof value === "string" ? value : JSON.stringify(value, null, 2);
+  function showNotice(message, error=false) {
+    const box = $("notice");
+    box.textContent = message;
+    box.style.borderColor = error ? "#8c3945" : "#2b745d";
+    box.style.background = error ? "#361923" : "#103329";
+    box.style.color = error ? "#ffc2c8" : "#b8ffe1";
+    box.classList.add("show");
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => box.classList.remove("show"), 4000);
+  }
+  function load() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      if (!Array.isArray(parsed)) throw new Error("Saved data is not a list.");
+      records = parsed.filter(r => r && typeof r.key === "string" && "value" in r);
+    } catch (e) {
+      records = [];
+      showNotice("Could not read saved records. Exported backups may help recover data.", true);
+    }
+  }
+  function persist() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+      return true;
+    } catch (e) {
+      showNotice("Could not save: browser storage may be full or disabled. Export data and free space.", true);
+      return false;
+    }
+  }
+  function resetForm() {
+    editingKey = null;
+    $("recordForm").reset();
+    $("recordCategory").value = "general";
+    $("editorTitle").textContent = "Create a record";
+    $("saveBtn").textContent = "Save record";
+  }
+  function render() {
+    $("totalStat").textContent = records.length;
+    const categories = [...new Set(records.map(r => r.category || "general"))].sort();
+    $("categoryStat").textContent = categories.length;
+    const today = new Date().toDateString();
+    $("todayStat").textContent = records.filter(r => new Date(r.createdAt).toDateString() === today).length;
+    const filter = $("categoryFilter").value;
+    $("categoryFilter").innerHTML = '<option value="">All categories</option>' + categories.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join("");
+    $("categoryFilter").value = categories.includes(filter) ? filter : "";
+    const q = $("searchInput").value.trim().toLocaleLowerCase();
+    const shown = records.filter(r => {
+      const searchable = [r.key, r.category, displayValue(r.value)].join(" ").toLocaleLowerCase();
+      return (!q || searchable.includes(q)) && (!$("categoryFilter").value || r.category === $("categoryFilter").value);
+    }).sort((a,b) => (b.updatedAt || "").localeCompare(a.updatedAt || ""));
+    $("recordCount").textContent = `${shown.length} ${shown.length === 1 ? "record" : "records"}`;
+    if (!shown.length) {
+      $("recordList").innerHTML = `<div class="empty"><b>${records.length ? "No matching records" : "Your vault is ready"}</b>${records.length ? "Try another search or category." : "Create your first record to get started."}</div>`;
+      return;
+    }
+    $("recordList").innerHTML = shown.map(r => {
+      const preview = displayValue(r.value);
+      const short = preview.length > 500 ? preview.slice(0,500) + "…" : preview;
+      return `<article class="record">
+        <div class="record-head"><div style="min-width:0"><div class="record-title">${escapeHTML(r.key)}</div><span class="tag">${escapeHTML(r.category || "general")}</span></div>
+        <div class="record-buttons"><button data-action="edit" data-key="${escapeHTML(r.key)}">Edit</button><button class="danger" data-action="delete" data-key="${escapeHTML(r.key)}">Delete</button></div></div>
+        <div class="record-preview">${escapeHTML(short)}</div>
+        <div class="record-meta">Created ${escapeHTML(formatDate(r.createdAt))} · Updated ${escapeHTML(formatDate(r.updatedAt))}</div>
+      </article>`;
+    }).join("");
+  }
+  function escapeHTML(value) {
+    return safeText(value).replace(/[&<>"']/g, ch => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
+  }
+  $("recordForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const key = $("recordKey").value.trim();
+    const category = $("recordCategory").value.trim().toLowerCase() || "general";
+    const raw = $("recordValue").value;
+    if (!key) return showNotice("Please enter a record key.", true);
+    if (category.length > 80) return showNotice("Category must be 80 characters or fewer.", true);
+    let value;
+    try { value = JSON.parse(raw); } catch { value = raw; }
+    const existing = records.find(r => r.key === key);
+    if (existing && editingKey !== key) return showNotice("That key already exists. Edit the existing record or choose a unique key.", true);
+    const previous = editingKey ? records.find(r => r.key === editingKey) : null;
+    const item = { key, value, category, createdAt: previous?.createdAt || nowISO(), updatedAt: nowISO() };
+    if (previous) records = records.filter(r => r.key !== editingKey);
+    records.push(item);
+    if (!persist()) { load(); render(); return; }
+    resetForm(); render(); showNotice(previous ? "Record updated." : "Record saved.");
+  });
+  $("recordList").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-action]");
+    if (!btn) return;
+    const key = btn.dataset.key;
+    const record = records.find(r => r.key === key);
+    if (!record) return;
+    if (btn.dataset.action === "edit") {
+      editingKey = key;
+      $("recordKey").value = record.key;
+      $("recordCategory").value = record.category || "general";
+      $("recordValue").value = displayValue(record.value);
+      $("editorTitle").textContent = "Edit record";
+      $("saveBtn").textContent = "Update record";
+      $("editorPanel").scrollIntoView({behavior:"smooth", block:"start"});
+    } else if (btn.dataset.action === "delete") {
+      if (!confirm(`Delete "${key}"? This cannot be undone unless you have a backup.`)) return;
+      records = records.filter(r => r.key !== key);
+      if (!persist()) { load(); render(); return; }
+      if (editingKey === key) resetForm();
+      render(); showNotice("Record deleted.");
+    }
+  });
+  $("searchInput").addEventListener("input", render);
+  $("categoryFilter").addEventListener("change", render);
+  $("resetBtn").addEventListener("click", resetForm);
+  $("newRecordBtn").addEventListener("click", () => { resetForm(); $("recordKey").focus(); $("editorPanel").scrollIntoView({behavior:"smooth",block:"start"}); });
+  $("exportBtn").addEventListener("click", () => {
+    const payload = { format:"DataVault JSON backup", version:1, exportedAt:nowISO(), records };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href=url; a.download=`datavault-backup-${new Date().toISOString().slice(0,10)}.json`; a.click();
+    URL.revokeObjectURL(url); showNotice("Backup export started.");
+  });
+  $("importBtn").addEventListener("click", () => $("importFile").click());
+  $("importFile").addEventListener("change", async e => {
+    const file = e.target.files?.[0]; if (!file) return;
+    try {
+      const parsed = JSON.parse(await file.text());
+      const incoming = Array.isArray(parsed) ? parsed : parsed.records;
+      if (!Array.isArray(incoming)) throw new Error("Expected a JSON array or a DataVault backup with a records array.");
+      const clean = incoming.map(r => {
+        if (!r || typeof r.key !== "string" || !r.key.trim() || !("value" in r)) throw new Error("Each record must have a key and value.");
+        return {key:r.key, value:r.value, category:safeText(r.category || "general").toLowerCase(), createdAt:r.createdAt || nowISO(), updatedAt:r.updatedAt || nowISO()};
+      });
+      if (!confirm(`Import ${clean.length} record(s)? Existing records with the same key will be replaced.`)) return;
+      const map = new Map(records.map(r => [r.key, r]));
+      clean.forEach(r => map.set(r.key, r));
+      records = [...map.values()];
+      if (!persist()) { load(); render(); return; }
+      render(); showNotice(`Imported ${clean.length} record(s).`);
+    } catch(err) { showNotice("Import failed: " + err.message, true); }
+    finally { e.target.value = ""; }
+  });
+  $("clearAllBtn").addEventListener("click", () => {
+    if (!records.length) return showNotice("There are no records to delete.");
+    if (!confirm("Delete ALL records from this browser? Export a backup first if needed.")) return;
+    records = [];
+    if (!persist()) return;
+    resetForm(); render(); showNotice("All records deleted.");
+  });
+  load();
+  $("recordCategory").value = "general";
+  render();
+})();
+</script>
+</body>
+</html>
