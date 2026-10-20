@@ -20,7 +20,8 @@ DataVault includes a responsive browser dashboard (`index.html`) for managing re
 
 ```text
 DataVault/
-├── index.html       # Complete standalone browser dashboard
+├── index.html       # Responsive dashboard markup and styles
+├── app.js           # Dashboard interactions and browser storage
 └── README.md        # Project documentation
 ```
 
@@ -31,7 +32,11 @@ DataVault/
 3. Create a record, enter a key and category, and enter either plain text or valid JSON.
 4. Use **Export JSON** to save a backup periodically.
 
-The dashboard stores data in the browser's `localStorage` for the site origin. If browser/site data is cleared, local records may be lost. Export backups of important information.
+The dashboard loads `app.js` for record management and stores data in the browser's `localStorage` for the site origin. Ensure `index.html` includes this script tag near the end of the body or in the head with `defer`:
+
+```html
+<script src="app.js" defer></script>
+``` If browser/site data is cleared, local records may be lost. Export backups of important information.
 
 ## Publish on GitHub Pages from Android
 
@@ -143,4 +148,3 @@ Use a current supported driver version for new deployments.
 ## License
 
 Choose a license before publishing if you want to specify reuse terms. For example, add an MIT `LICENSE` file and update this section to match your choice.
-# Data_vault
