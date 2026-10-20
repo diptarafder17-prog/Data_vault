@@ -1,0 +1,10 @@
+# On Linux/macOS
+javac -cp ".:sqlite-jdbc-3.45.1.0.jar" DataVault.java
+
+# On Windows
+javac -cp ".;sqlite-jdbc-3.45.1.0.jar" DataVault.java
+# On Linux/macOS
+java -cp ".:sqlite-jdbc-3.45.1.0.jar" DataVault
+
+# On Windows
+java -cp ".;sqlite-jdbc-3.45.1.0.jar" DataVault
